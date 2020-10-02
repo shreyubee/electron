@@ -92,10 +92,6 @@ extern const char kEnableWebSQL[];
 extern const char kSpellcheck[];
 #endif
 
-#if BUILDFLAG(ENABLE_REMOTE_MODULE)
-extern const char kEnableRemoteModule[];
-#endif
-
 }  // namespace options
 
 // Following are actually command line switches, should be moved to other files.
@@ -148,10 +144,6 @@ extern const char kDisableNTLMv2[];
 
 #if BUILDFLAG(ENABLE_BUILTIN_SPELLCHECKER)
 extern const char kEnableSpellcheck[];
-#endif
-
-#if BUILDFLAG(ENABLE_REMOTE_MODULE)
-extern const char kEnableRemoteModule[];
 #endif
 
 extern const char kGlobalCrashKeys[];

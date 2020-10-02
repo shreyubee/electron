@@ -24,14 +24,11 @@ const ipcRendererUtils = require('@electron/internal/renderer/ipc-renderer-inter
 
 const {
   preloadScripts,
-  isRemoteModuleEnabled,
   isWebViewTagEnabled,
   guestInstanceId,
   openerId,
   process: processProps
 } = ipcRendererUtils.invokeSync('ELECTRON_BROWSER_SANDBOX_LOAD');
-
-process.isRemoteModuleEnabled = isRemoteModuleEnabled;
 
 const electron = require('electron');
 
