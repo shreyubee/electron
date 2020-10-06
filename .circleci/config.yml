@@ -1701,12 +1701,6 @@ jobs:
       <<: *env-testing-build
     <<: *steps-electron-ts-compile-for-doc-change
 
-  linux-arm64-test:
-    <<: *machine-linux-arm64
-    steps:
-      - run: echo "Hey arm64 runner works"
-      - run: uname -a
-
   # Layer 1: Checkout.
   linux-checkout:
     <<: *machine-linux-2xlarge
@@ -2029,7 +2023,7 @@ jobs:
       GCLIENT_EXTRA_ARGS: '--custom-var=checkout_arm=True --custom-var=checkout_arm64=True'
     steps:
       - electron-build:
-          persist: false
+          persist: true
           checkout: true
           use-out-cache: false
 
@@ -2427,6 +2421,10 @@ jobs:
       <<: *env-send-slack-notifications
     <<: *steps-verify-ffmpeg
 
+  linux-arm64-testing-tests:
+    <<: *machine-linux-arm64
+    <<: *steps-tests
+
   osx-testing-x64-tests:
     <<: *machine-mac-large
     environment:
@@ -2625,7 +2623,6 @@ workflows:
   build-linux:
     when: << pipeline.parameters.run-build-linux >>
     jobs:
-      - linux-arm64-test
       - linux-checkout-fast
       - linux-checkout-and-save-cache
 
@@ -2658,6 +2655,9 @@ workflows:
       - linux-arm-testing
 
       - linux-arm64-testing
+      - linux-arm64-testing-tests:
+          requires:
+            - linux-arm64-testing
       - linux-arm64-testing-gn-check:
           requires:
             - linux-checkout-fast
