@@ -84,8 +84,7 @@ machine-linux-2xlarge: &machine-linux-2xlarge
   resource_class: 2xlarge+
 
 machine-linux-arm64: &machine-linux-arm64
-  docker:
-    - image: electron.azurecr.io/build:arm64v8-4cec2c5ab66765caa724e37bae2bffb9b29722a5
+  machine: true
   resource_class: electronjs/linux-arm64
 
 machine-mac: &machine-mac
