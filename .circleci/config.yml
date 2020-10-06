@@ -83,6 +83,11 @@ machine-linux-2xlarge: &machine-linux-2xlarge
   <<: *docker-image
   resource_class: 2xlarge+
 
+machine-linux-arm64: &machine-linux-arm64
+  docker:
+    - image: electron.azurecr.io/build:arm64v8-4cec2c5ab66765caa724e37bae2bffb9b29722a5
+  resource_class: electronjs/linux-arm64
+
 machine-mac: &machine-mac
   macos:
     xcode: "12.2.0"
@@ -1697,6 +1702,12 @@ jobs:
       <<: *env-testing-build
     <<: *steps-electron-ts-compile-for-doc-change
 
+  linux-arm64-test:
+    <<: *machine-linux-arm64
+    steps:
+      - run: echo "Hey arm64 runner works"
+      - run: uname -a
+
   # Layer 1: Checkout.
   linux-checkout:
     <<: *machine-linux-2xlarge
@@ -2615,6 +2626,7 @@ workflows:
   build-linux:
     when: << pipeline.parameters.run-build-linux >>
     jobs:
+      - linux-arm64-test
       - linux-checkout-fast
       - linux-checkout-and-save-cache
 
