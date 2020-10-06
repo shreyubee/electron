@@ -150,6 +150,7 @@ env-arm64: &env-arm64
   MKSNAPSHOT_TOOLCHAIN: //build/toolchain/linux:clang_arm64
   BUILD_NATIVE_MKSNAPSHOT: 1
   TARGET_ARCH: arm64
+  NPM_CONFIG_ARCH: arm64
 
 env-mas: &env-mas
   GN_EXTRA_ARGS: 'is_mas_build = true'
@@ -2423,6 +2424,9 @@ jobs:
 
   linux-arm64-testing-tests:
     <<: *machine-linux-arm64
+    environment:
+      <<: *env-arm64
+      <<: *env-headless-testing
     <<: *steps-tests
 
   osx-testing-x64-tests:
