@@ -30,7 +30,9 @@ SerialChooserContext* GetChooserContext(content::RenderFrameHost* frame) {
 
 ElectronSerialDelegate::ElectronSerialDelegate() = default;
 
-ElectronSerialDelegate::~ElectronSerialDelegate() = default;
+ElectronSerialDelegate::~ElectronSerialDelegate() {
+  LOG(INFO) << "IN ~ElectronSerialDelegate()";
+}
 
 std::unique_ptr<content::SerialChooser> ElectronSerialDelegate::RunChooser(
     content::RenderFrameHost* frame,
@@ -87,6 +89,7 @@ void ElectronSerialDelegate::AddObserver(content::RenderFrameHost* frame,
 
 void ElectronSerialDelegate::RemoveObserver(content::RenderFrameHost* frame,
                                             Observer* observer) {
+  LOG(INFO) << "In ElectronSerialDelegate::RemoveObserver";
   SerialChooserContext* serial_chooser_context = GetChooserContext(frame);
   if (serial_chooser_context) {
     return serial_chooser_context->RemovePortObserver(observer);

@@ -73,7 +73,9 @@ SerialChooserController::SerialChooserController(
 }
 
 SerialChooserController::~SerialChooserController() {
+  LOG(INFO) << "IN ~SerialChooserController()";
   RunCallback(/*port=*/nullptr);
+  LOG(INFO) << "IN ~SerialChooserController()";
 }
 
 api::Session* SerialChooserController::GetSession() {

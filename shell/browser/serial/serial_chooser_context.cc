@@ -7,6 +7,7 @@
 #include <utility>
 
 #include "base/base64.h"
+#include "base/debug/stack_trace.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/values.h"
 #include "content/public/browser/device_service.h"
@@ -53,7 +54,9 @@ base::Value PortInfoToValue(const device::mojom::SerialPortInfo& port) {
 }
 
 SerialChooserContext::SerialChooserContext() = default;
-SerialChooserContext::~SerialChooserContext() = default;
+SerialChooserContext::~SerialChooserContext() {
+  LOG(INFO) << "DESTROYING SerialChooserContext::~SerialChooserContext";
+}
 
 void SerialChooserContext::GrantPortPermission(
     const url::Origin& requesting_origin,
@@ -102,6 +105,8 @@ void SerialChooserContext::AddPortObserver(PortObserver* observer) {
 }
 
 void SerialChooserContext::RemovePortObserver(PortObserver* observer) {
+  LOG(INFO) << "In SerialChooserContext::RemovePortObserver";
+  base::debug::StackTrace().Print();
   port_observer_list_.RemoveObserver(observer);
 }
 
