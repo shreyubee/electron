@@ -54,9 +54,6 @@ base::Value PortInfoToValue(const device::mojom::SerialPortInfo& port) {
 
 SerialChooserContext::SerialChooserContext() = default;
 SerialChooserContext::~SerialChooserContext() {
-  // Clear out the port observer list so that RemovePortObserver isn't called
-  // when observers are destroyed after this context is destroyed.
-  port_observer_list_.Clear();
   LOG(INFO) << "DESTROYING SerialChooserContext::~SerialChooserContext";
 }
 
@@ -108,7 +105,12 @@ void SerialChooserContext::AddPortObserver(PortObserver* observer) {
 
 void SerialChooserContext::RemovePortObserver(PortObserver* observer) {
   LOG(INFO) << "In SerialChooserContext::RemovePortObserver";
-  port_observer_list_.RemoveObserver(observer);
+  if (observer) {
+    port_observer_list_.RemoveObserver(observer);
+  } else {
+    LOG(INFO) << "In SerialChooserContext::RemovePortObserver, skipping "
+                 "port_observer_list_.RemoveObserver because !observer";
+  }
 }
 
 base::WeakPtr<SerialChooserContext> SerialChooserContext::AsWeakPtr() {
