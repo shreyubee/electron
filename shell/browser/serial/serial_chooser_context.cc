@@ -105,12 +105,7 @@ void SerialChooserContext::AddPortObserver(PortObserver* observer) {
 
 void SerialChooserContext::RemovePortObserver(PortObserver* observer) {
   LOG(INFO) << "In SerialChooserContext::RemovePortObserver";
-  if (observer) {
-    port_observer_list_.RemoveObserver(observer);
-  } else {
-    LOG(INFO) << "In SerialChooserContext::RemovePortObserver, skipping "
-                 "port_observer_list_.RemoveObserver because !observer";
-  }
+  port_observer_list_.RemoveObserver(observer);
 }
 
 base::WeakPtr<SerialChooserContext> SerialChooserContext::AsWeakPtr() {

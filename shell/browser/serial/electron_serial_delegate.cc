@@ -6,9 +6,11 @@
 
 #include <utility>
 
+#include "base/bind_helpers.h"
 #include "base/feature_list.h"
 #include "content/public/browser/web_contents.h"
 #include "shell/browser/api/electron_api_web_contents.h"
+#include "shell/browser/serial/serial_chooser.h"
 #include "shell/browser/serial/serial_chooser_context.h"
 #include "shell/browser/serial/serial_chooser_context_factory.h"
 #include "shell/browser/serial/serial_chooser_controller.h"
@@ -48,12 +50,7 @@ std::unique_ptr<content::SerialChooser> ElectronSerialDelegate::RunChooser(
     // If feature is disabled, immediately return back with no port selected.
     std::move(callback).Run(nullptr);
   }
-
-  // Return a nullptr because the return value isn't used for anything, eg
-  // there is no mechanism to cancel navigator.serial.requestPort(). The return
-  // value is simply used in Chromium to cleanup the chooser UI once the serial
-  // service is destroyed.
-  return nullptr;
+  return std::make_unique<SerialChooser>(base::DoNothing());
 }
 
 bool ElectronSerialDelegate::CanRequestPortPermission(
