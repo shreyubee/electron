@@ -7,7 +7,6 @@
 #include <utility>
 
 #include "base/base64.h"
-#include "base/debug/stack_trace.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/values.h"
 #include "content/public/browser/device_service.h"
@@ -55,6 +54,9 @@ base::Value PortInfoToValue(const device::mojom::SerialPortInfo& port) {
 
 SerialChooserContext::SerialChooserContext() = default;
 SerialChooserContext::~SerialChooserContext() {
+  // Clear out the port observer list so that RemovePortObserver isn't called
+  // when observers are destroyed after this context is destroyed.
+  port_observer_list_.Clear();
   LOG(INFO) << "DESTROYING SerialChooserContext::~SerialChooserContext";
 }
 
@@ -106,7 +108,6 @@ void SerialChooserContext::AddPortObserver(PortObserver* observer) {
 
 void SerialChooserContext::RemovePortObserver(PortObserver* observer) {
   LOG(INFO) << "In SerialChooserContext::RemovePortObserver";
-  base::debug::StackTrace().Print();
   port_observer_list_.RemoveObserver(observer);
 }
 
